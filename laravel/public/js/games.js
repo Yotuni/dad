@@ -39,12 +39,21 @@
             newtr.appendChild(newtd);
             // Quinta Célula (1 link - edit  - e um formulário para delete)
             // Link:
-            newtd = document.createElement('td');       
+           // newtd = document.createElement('td');       
+            
+            //newtd.appendChild(newNode);
+            // Link:
+            newtd = document.createElement('td');     
             var newNode = document.createElement('a');
-            newNode.textContent = 'Edit';
-            newNode.classList.add('btn', 'btn-xs', 'btn-primary');
-            newNode.href = window.location.hostname + '/games/' + id + '/edit';
+            newNode.textContent = 'Join';
+            newNode.classList.add('btn', 'btn-xs', 'btn-success');
+            newNode.href = window.location.hostname + '/api/games/' + id + '/join';  
+            var newNode2 = document.createElement('a');
+            newNode2.textContent = 'Edit';
+            newNode2.classList.add('btn', 'btn-xs', 'btn-primary');
+            newNode2.href = window.location.hostname + '/games/' + id + '/edit';
             newtd.appendChild(newNode);
+            newtd.appendChild(newNode2);
             // Form
             var formNode = document.createElement('form');
             formNode.action = '/api/games/'+id;
@@ -93,7 +102,7 @@
         axios.get(url).then(function(result) {
             //console.log(data);
             $('tbody').html('');
-            generateGamesRows(result.data.data);
+            generateGamesRows(result.data);
             var $pagination = $('.pagination');
             $pagination.html('');
             $pagination.append('<li class="page-item"><a class="page-link" data-url="'+result.data.prev_page_url+'">Previous</a></li>');

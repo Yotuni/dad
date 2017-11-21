@@ -11,7 +11,12 @@ class GameControllerAPI extends Controller
 {
 	public function all()
     {
-        return Game::paginate(5);
+    	$games = Game::all();
+    	foreach ($games as $game) {
+    		$game['created_by'] = $game->user->nickname;
+    	}
+    	return $games;
+    	//return Game::all();
     }    
 
     public function delete($id)
@@ -19,4 +24,12 @@ class GameControllerAPI extends Controller
 		Game::findOrFail($id)->delete();
         return redirect()->route('games.index')->with('success', 'Game deleted successfully!'); 
     }
+
+    public function show($id)
+    {
+        $game = Game::findOrFail($id);
+        $users = $game->users()->get();
+        return view('games.show', compact('game', 'users'));
+    }
+
 }

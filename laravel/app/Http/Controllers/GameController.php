@@ -20,6 +20,7 @@ class GameController extends Controller
         return view('games.index', compact('games'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -65,7 +66,9 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        //
+        $game = Game::findOrFail($id);
+        $users = $game->users()->get();
+        return view('games.show', compact('game', 'users'));
     }
 
     /**
