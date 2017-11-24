@@ -19,6 +19,38 @@ class GameControllerAPI extends Controller
     	//return Game::all();
     }    
 
+    public function store() 
+    {
+        $game = new Game();
+        $game_user = new Game_user();
+        $game->type = 'singleplayer';
+        $game->status = 'pending';
+        $game->total_players = 1;
+        $game->created_by = Auth::user()->id; 
+        $game->save();
+        $game_user->game_id = $game->id;
+        $game_user->user_id = $game->created_by;
+        $game_user->save();
+        return redirect()->route('games.index')->with('success', 'Game added successfully!'); 
+    }
+
+    public function joinGame($id) 
+    {
+        $game = Game::findOrFail($id);
+        $game_user = new Game_user();
+        if ($game->total_players < 5) 
+        {
+            $game->total_players++;
+            $game->status = 'multiplayer';
+        }
+        $game->save();
+        $game_user->game_id = $game->id;
+        $game_user->user_id = Auth::user();
+        $game_user->save();
+        return redirect()->route('games.index')->with('success', 'Game added successfully!'); 
+    }
+
+
     public function delete($id)
     {	
 		Game::findOrFail($id)->delete();

@@ -18,5 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::get('games', 'GameControllerAPI@all');
 Route::get('/games/{id}', 'GameControllerAPI@show')->name('show');
+Route::get('/games/{id}', 'GameControllerAPI@joinGame')->name('joinGame');
 
 Route::delete('games/{id}', 'GameControllerAPI@delete');

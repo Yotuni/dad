@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Game;
+use App\User;
+use Illuminate\Support\Facades\Session;
 use App\Game_user;
 use Auth;
 
-class GameController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +17,20 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = Game::all();
-        return view('games.index', compact('games'));
+        $users = User::all();
+        return view('users.index', compact('users'));
+    }
+
+    public function blockUser(User $user, Request $request)
+    {
+        $user->blocked = $request->block;
+        $user->save();
+        if($request->block == 1) {
+            Session::flash('message', 'User blocked!');
+        } else {
+            Session::flash('message', 'User unblocked!');
+        }
+        return  redirect()->route('users.index');
     }
 
 
@@ -28,17 +41,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        $game = new Game();
-        $game_user = new Game_user();
-        $game->type = 'singleplayer';
-        $game->status = 'pending';
-        $game->total_players = 1;
-        $game->created_by = Auth::user()->id; 
-        $game->save();
-        $game_user->game_id = $game->id;
-        $game_user->user_id = $game->created_by;
-        $game_user->save();
-        return redirect()->route('games.index')->with('success', 'Game added successfully!'); 
+        
     }
 
     /**
@@ -49,13 +52,7 @@ class GameController extends Controller
      */
     public function store()
     {
-        $game = new Game();
-        $game->type = 'singleplayer';
-        $game->status = 'pending';
-        $game->total_players = 0;
-        $game->created_by = Auth::user(); 
-        $game->save();
-        return redirect('home')->with('success', 'Game added successfully!');    
+ 
     }
 
     /**
@@ -66,9 +63,7 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        $game = Game::findOrFail($id);
-        $users = $game->users()->get();
-        return view('games.show', compact('game', 'users'));
+ 
     }
 
     /**
@@ -102,7 +97,8 @@ class GameController extends Controller
      */
     public function destroy($id)
     {
-        Game::findOrFail($id)->delete();
-        return redirect()->route('games.index')->with('success', 'User deleted successfully!');
+        $user = User::findorfail($id);
+        $user->delete();
+        return redirect()->route('users.index');
     }
 }

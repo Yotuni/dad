@@ -1,7 +1,7 @@
 (function() {
 	
-    'use strict';
-
+    //'use strict';
+/*
     function generateGamesRows(games) {
         var getCRSF_Token = function() {
             var element = document.querySelector('meta[name="csrf-token"]');
@@ -115,7 +115,9 @@
         }).catch(console.log);
     };
 
-    getPage();
-	
+    getPage();*/
+	$(document).ready(function(){
+        $('#showGames').DataTable();
+    });
 
 })();
