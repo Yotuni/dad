@@ -9,14 +9,30 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import VueRouter from 'vue-router';
+import VueSocketio from 'vue-socket.io';
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.use(VueRouter);
+
+Vue.use(VueSocketio, 'http://192.168.10.10:8080');
+//Vue.use(VueSocketio, 'http://192.168.10.1:8080');
+
+const singleplayer_game = Vue.component('singlegame', require('./components/singleplayer.vue'));
+const multiplayerGame = Vue.component('multiplayergame', require('./components/multiplayer.vue'));
+
+const routes = [
+  { path: '/single', component: singleplayer_game },
+  { path: '/multi', component: multiplayerGame }
+];
+
+const router = new VueRouter({
+  routes:routes
+});
 
 const app = new Vue({
-    el: '#app'
-});
+  router,
+  data:{
+    player1:undefined,
+    player2: undefined
+  }
+}).$mount('#app');
