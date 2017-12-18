@@ -25,4 +25,13 @@ Route::resource('games', 'GameController');
 
 Route::post('/block/{user}', 'UserController@blockUser')->name('blockUser');
 
+Route::post('/hidden/{image}', 'ImageController@activeHiddenFace')->name('activeHiddenFace');
+
+Route::post('/shown/{image}', 'ImageController@activeShownFace')->name('activeShownFace');
+
 Route::get('/games/show/{id}', 'GameController@show')->name('show');
+
+Route::get('/images/shownFace', 'ImageController@shownFace')->name('shownFace');
+
+Route::get('/images/hiddenFace', 'ImageController@hiddenFace')->name('hiddenFace');
+
