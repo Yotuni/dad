@@ -32,7 +32,7 @@
     <tbody>
         @foreach($games as $game)
             <tr>
-                <td><a href = "{{ '/api/games/show/' . $game->id }}" >{{$game->id}}</a></td>
+                <td><a href = "{{ '/games/show/' . $game->id }}" >{{$game->id}}</a></td>
                 <td>{{$game->type}}</td>
                 <td>{{$game->status}}</td>
                 <td>{{$game->total_players}}</td>

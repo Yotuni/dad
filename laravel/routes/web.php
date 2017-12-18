@@ -24,3 +24,5 @@ Route::resource('users', 'UserController');
 Route::resource('games', 'GameController');
 
 Route::post('/block/{user}', 'UserController@blockUser')->name('blockUser');
+
+Route::get('/games/show/{id}', 'GameController@show')->name('show');

@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', compact('users'));
+        return view('adminPanel.users.index', compact('users'));
     }
 
     public function blockUser(User $user, Request $request)
@@ -99,6 +99,6 @@ class UserController extends Controller
     {
         $user = User::findorfail($id);
         $user->delete();
-        return redirect()->route('users.index');
+        return redirect()->route('adminPanel.users.index');
     }
 }
