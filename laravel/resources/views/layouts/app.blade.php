@@ -64,10 +64,10 @@
                                 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{route('hiddenFace')}}" class="">
+                                        <a href="{{route('images.hiddenFace')}}" class="">
                                             Hidden Face
                                         </a>
-                                        <a href="{{route('shownFace')}}" class="">
+                                        <a href="{{route('images.shownFace')}}" class="">
                                             Shown Face
                                         </a>
                                     </li>
