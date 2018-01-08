@@ -70,6 +70,7 @@
                 <br>
             </div>
         </div>
+        {{ Form::checkbox('face', true, true, ['style' => 'visibility:hidden;']) }}
         {{ Form::submit('Create', ['class' => 'btn btn-primary']) }}
 
     {{ Form::close() }}

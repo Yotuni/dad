@@ -49,16 +49,22 @@ class ImageController extends Controller
     public function create(Request $request) {
         $img = new Image();
         $image = $request->file('image');
-        $resizedImage = Image::make($image)->resize(300, 300);
-        $filename = $request->resizedImage->hashName();
+        $filename = $request->image->hashName();
         $path = 'img';
         //Storing image
-        Storage::disk('public')->put($path . '/' , $resizedImage);
+        Storage::disk('public')->put($path . '/' , $image);
         //Get user
-        $img->face = 'tile';
+        if($request->face == true) 
+            $img->face = 'tile';
+        else 
+            $img->face = 'hidden';
         $img->path = $filename;
         $img->active = 0;
         $img->save();
+        if($request->face == true) {
+            return  redirect()->route('shownFace');
+        } else {
+            return  redirect()->route('hiddenFace');
+        }
     }
-
 }
