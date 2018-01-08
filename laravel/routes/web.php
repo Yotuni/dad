@@ -31,4 +31,8 @@ Route::post('/shown/{image}', 'ImageController@activeShownFace')->name('activeSh
 
 Route::get('/games/show/{id}', 'GameController@show')->name('show');
 
+Route::get('/hiddenFace', 'ImageController@hiddenFace')->name('hiddenFace');
+
+Route::get('/shownFace', 'ImageController@shownFace')->name('shownFace');
+
 Route::get('/lobby','MemoryGameController@index');
