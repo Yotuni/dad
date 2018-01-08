@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use App\Image;
 
 
@@ -45,6 +46,19 @@ class ImageController extends Controller
         return  redirect()->route('hiddenFace');
     }
 
-    
+    public function create(Request $request) {
+        $img = new Image();
+        $image = $request->file('image');
+        $resizedImage = Image::make($image)->resize(300, 300);
+        $filename = $request->resizedImage->hashName();
+        $path = 'img';
+        //Storing image
+        Storage::disk('public')->put($path . '/' , $resizedImage);
+        //Get user
+        $img->face = 'tile';
+        $img->path = $filename;
+        $img->active = 0;
+        $img->save();
+    }
 
 }

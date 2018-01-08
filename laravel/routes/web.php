@@ -23,6 +23,8 @@ Route::resource('users', 'UserController');
 
 Route::resource('games', 'GameController');
 
+Route::post('/image/create', 'ImageController@create')->name('createImage');
+
 Route::post('/block/{user}', 'UserController@blockUser')->name('blockUser');
 
 Route::post('/hidden/{image}', 'ImageController@activeHiddenFace')->name('activeHiddenFace');

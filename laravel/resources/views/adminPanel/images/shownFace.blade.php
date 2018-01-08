@@ -27,7 +27,7 @@
             @foreach($images as $image)
                 <tr>
                     <td>
-                        <img src="{{Storage::disk('public')->url('img/'.$image->path)}}">
+                        <img src="{{Storage::disk('public')->url('img/'.$image->path)}}" width="50px" height="50px">
                         </img>
                     </td>
                     
@@ -62,7 +62,7 @@
         </tbody>
     </table>
     
-    {{ Form::open(array('route' => array('create'), 'files'=>true, 'method' => 'PUT')) }}
+    {{ Form::open(array('route' => array('createImage'), 'files'=>true)) }}
         <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
             <label for="image" class="col-md-4 control-label">Update Image</label>
             <div class="col-md-6">
@@ -70,9 +70,8 @@
                 <br>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary pull-right" style="margin: 5px">
-            Submit
-        </button>
+        {{ Form::submit('Create', ['class' => 'btn btn-primary']) }}
+
     {{ Form::close() }}
 
 
