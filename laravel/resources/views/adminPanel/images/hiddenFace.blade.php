@@ -26,8 +26,9 @@
             @foreach($images as $image)
                 <tr>
                     <td>
-                        <img src="{{Storage::disk('public')->url('img/'.$image->path)}}">
+                        <img src="{{ Storage::disk('public')->url('img/'.$image->path)}}">
                         </img>
+                        
                     </td>
                     
                     <td>

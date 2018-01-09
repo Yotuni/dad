@@ -23,7 +23,9 @@ Route::resource('users', 'UserController');
 
 Route::resource('games', 'GameController');
 
-Route::post('/block/{user}', 'UserController@blockUser')->name('blockUser');
+Route::post('/blockUser/{user}', 'UserController@block')->name('block');
+
+Route::get('/blockUser/{user}', 'UserController@blockUser')->name('blockUser');
 
 Route::post('/hidden/{image}', 'ImageController@activeHiddenFace')->name('activeHiddenFace');
 
@@ -34,5 +36,7 @@ Route::get('/games/show/{id}', 'GameController@show')->name('show');
 Route::get('/hiddenFace', 'ImageController@hiddenFace')->name('hiddenFace');
 
 Route::get('/shownFace', 'ImageController@shownFace')->name('shownFace');
+
+
 
 Route::get('/lobby','MemoryGameController@index');
