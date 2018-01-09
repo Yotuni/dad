@@ -26,22 +26,30 @@ class UserController extends Controller
     public function block(User $user, Request $request)
     {
         $user->blocked = $request->block;
+    
         
         $user->save();
+
         if($request->block == 1) {
             $user->reason_blocked = $request->reasonBlocked;
-            Mail::send('emails.send', ['title' => 'Your account has been blocked!', 'content' => $request->reasonBlocked], function ($message)
-            {
-    
-                $message->from('dadproj122@gmail.com', 'Projeto DAD');
-                $message->subject('ProjDAD 122');
-                $message->to('mickael_gomes@hotmail.com');
-    
-            });
+            $title = 'Your account has been blocked!';
+            $content = $request->reasonBlocked;
+            $flag = 1;
             Session::flash('message', 'User blocked!');
         } else {
+            $title = 'Your account has been blocked!';
+            $content = $request->reasonBlocked;
+            $flag = 0;
             Session::flash('message', 'User unblocked!');
         }
+
+
+        Mail::send('emails.send', ['title' => $title, 'content' => $content, 'flag' => $flag], function ($message) use ($user)
+        {
+            $message->from('dadproj122@gmail.com', 'Projeto DAD');
+            $message->subject('ProjDAD 122');
+            $message->to($user->email);
+        });
         return  redirect()->route('users.index');    
     }
 
