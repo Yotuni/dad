@@ -27,7 +27,6 @@ class UserController extends Controller
         return view('adminPanel.users.index', compact('users'));
     }
 
-<<<<<<< HEAD
     public function listRemovedUsers()
     {
         $users = User::onlyTrashed()->get();
@@ -41,10 +40,7 @@ class UserController extends Controller
     }
 
 
-    public function blockUser(User $user, Request $request)
-=======
     public function block(User $user, Request $request)
->>>>>>> 50ba9e5eefe6188d871dfaa1f24b3ad2015d43b7
     {
         $user->blocked = $request->block;
     
