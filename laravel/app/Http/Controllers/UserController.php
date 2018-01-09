@@ -7,6 +7,8 @@ use App\User;
 use Illuminate\Support\Facades\Session;
 use App\Game_user;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use Mailgun\Mailgun;
 
 class UserController extends Controller
 {
@@ -25,6 +27,7 @@ class UserController extends Controller
         return view('adminPanel.users.index', compact('users'));
     }
 
+<<<<<<< HEAD
     public function listRemovedUsers()
     {
         $users = User::onlyTrashed()->get();
@@ -39,15 +42,43 @@ class UserController extends Controller
 
 
     public function blockUser(User $user, Request $request)
+=======
+    public function block(User $user, Request $request)
+>>>>>>> 50ba9e5eefe6188d871dfaa1f24b3ad2015d43b7
     {
         $user->blocked = $request->block;
+    
+        
         $user->save();
+
         if($request->block == 1) {
+            $user->reason_blocked = $request->reasonBlocked;
+            $title = 'Your account has been blocked!';
+            $content = $request->reasonBlocked;
+            $flag = 1;
             Session::flash('message', 'User blocked!');
         } else {
+            $title = 'Your account has been blocked!';
+            $content = $request->reasonBlocked;
+            $flag = 0;
             Session::flash('message', 'User unblocked!');
         }
-        return  redirect()->route('users.index');
+
+
+        Mail::send('emails.send', ['title' => $title, 'content' => $content, 'flag' => $flag], function ($message) use ($user)
+        {
+            $message->from('dadproj122@gmail.com', 'Projeto DAD');
+            $message->subject('ProjDAD 122');
+            $message->to($user->email);
+        });
+        return  redirect()->route('users.index');    
+    }
+
+    
+
+    public function blockUser(User $user, Request $request)
+    {
+        return view('adminPanel.users.blockuser', compact('user'));
     }
 
 
@@ -59,6 +90,8 @@ class UserController extends Controller
     public function create()
     {
         
+        return view('adminPanel.users.add');
+        
     }
 
     /**
@@ -69,7 +102,12 @@ class UserController extends Controller
      */
     public function store()
     {
- 
+        $user = new User();
+        $user->fill($request->all());
+        $user->password = Hash::make($request->password);
+        $user->
+        $user->save();
+        return redirect()->route('users.index')->with('success', 'User added successfully!');
     }
 
     /**

@@ -14,6 +14,8 @@
             </div>
 @endif
 
+<!-- <div><a class="btn btn-primary" href="{{ route('users.create')}}">New User</a></div> -->
+
     <table class="table table-striped" id="showUsers">
     <thead>
         <tr>
@@ -34,25 +36,20 @@
                 <td>{{$user->email}}</td>
                 <td>{{$user->nickname}}</td>
                 <td>
-                    <form method="POST" action="{{route('blockUser' ,$user)}}">
+                <div class="form-group">
+                    @if ($user->blocked == 1)
+                        <form method="POST" action="{{route('blockUser' ,$user)}}">
                         {{csrf_field()}}
                         <div class="form-group" hidden>
-                            <select name="block" id="block" class="form-control">
-                                @if ($user->blocked == 1)
-                                    <option value="0">{{0}}</option>
-                                @else
-                                    <option value="1">{{1}}</option>
-                                @endif
-                            </select>
+                            <input name="block" id="block" class="form-control" value="0" />
                         </div>
-                        <div class="form-group">
-                            @if ($user->blocked == 1)
-                                <button type="submit" class="btn btn-success btn-sm">UnBlock</button>
-                            @else
-                                <button type="submit" class="btn btn-danger btn-sm">Block</button>
-                            @endif
-                        </div>
-                    </form> 
+                        <button type="submit" class="btn btn-success btn-sm">UnBlock</button>
+                        </form> 
+                    @else
+                    <a class="btn btn-danger btn-sm" href="{{route('blockUser' ,$user)}}">Block</a>
+                    @endif
+                </div>
+                   
                 </td>
                 <td>
                     {{ Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id]]) }}
