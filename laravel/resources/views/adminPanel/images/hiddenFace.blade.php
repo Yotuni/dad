@@ -26,8 +26,13 @@
             @foreach($images as $image)
                 <tr>
                     <td>
+<<<<<<< HEAD
                         <img src="{{Storage::disk('public')->url('img/'.$image->path)}}"  width="50px" height="50px">
+=======
+                        <img src="{{ Storage::disk('public')->url('img/'.$image->path)}}">
+>>>>>>> 50ba9e5eefe6188d871dfaa1f24b3ad2015d43b7
                         </img>
+                        
                     </td>
                     
                     <td>
