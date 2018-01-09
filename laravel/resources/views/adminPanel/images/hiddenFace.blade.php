@@ -50,7 +50,10 @@
                                 @endif
                             </div>
                         </form> 
-                        <button class="btn">Delete</button>                    
+                        {{ Form::open(['method' => 'DELETE', 'route' => ['deleteImage', $image->id]]) }}
+                                {{ Form::hidden('id', $image->id) }}
+                                {{ Form::submit('Delete', ['class' => 'btn btn-danger']) }}
+                        {{ Form::close() }}                   
                     </td>
                 </tr>
             @endforeach

@@ -3,10 +3,12 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use Notifiable;
 
     public function games()
@@ -19,7 +21,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Game', 'game_user', 'user_id', 'game_id');
     }
 
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
      *

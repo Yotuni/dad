@@ -84,7 +84,7 @@
                                         <a href="{{route('users.index')}}" class="">
                                             List Users
                                         </a>
-                                        <a href="{{route('games.index')}}" class="">
+                                        <a href="{{route('listRemovedUsers')}}" class="">
                                             List Removed Users
                                         </a>
                                     </li>

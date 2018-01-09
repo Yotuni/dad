@@ -9,7 +9,7 @@ class TicTacToeGame {
         this.player2= '';
         this.playerTurn = 1;
         this.winner = 0;
-        this.board = [0,0,0,0,0,0,0,0,0];
+        this.board = [0,0,0,0,0,0,0,0,0,0,0,0];
     }
 
     join(player2Name){

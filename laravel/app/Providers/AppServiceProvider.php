@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Game_user;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,10 +12,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
-    }
+    
+
 
     /**
      * Register any application services.

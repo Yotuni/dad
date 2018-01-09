@@ -46,6 +46,20 @@ class ImageController extends Controller
         return  redirect()->route('hiddenFace');
     }
 
+
+    public function destroy($id)
+    {
+        $image = Image::findOrFail($id);
+        $face = $image->face;
+        Storage::disk('public')->delete('img/' . $image->path);
+        $image->delete();
+        if ($face == 'tile') {
+            return redirect()->route('shownFace');
+        } else {
+            return redirect()->route('hiddenFace');
+        }
+    }
+
     public function create(Request $request) {
         $img = new Image();
         $image = $request->file('image');
