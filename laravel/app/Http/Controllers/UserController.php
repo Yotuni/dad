@@ -52,15 +52,16 @@ class UserController extends Controller
             $title = 'Your account has been blocked!';
             $content = $request->reasonBlocked;
             $flag = 1;
-            Session::flash('message', 'User blocked!');
+            $message =  $user->nickname . ' Block';
+            
         } else {
-            $title = 'Your account has been blocked!';
+            $title = 'Your account has been Unlocked!';
             $content = $request->reasonBlocked;
             $flag = 0;
-            Session::flash('message', 'User unblocked!');
+            $message =  $user->nickname . ' Unblocked';
         }
 
-
+        Session::flash('message', $message);
         Mail::send('emails.send', ['title' => $title, 'content' => $content, 'flag' => $flag], function ($message) use ($user)
         {
             $message->from('dadproj122@gmail.com', 'Projeto DAD');
