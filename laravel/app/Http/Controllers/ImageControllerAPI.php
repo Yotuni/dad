@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Image;
 use Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class ImageControllerAPI extends Controller
 {
@@ -14,7 +16,8 @@ class ImageControllerAPI extends Controller
     }  
 
     public function getImage($id){
-        $imgSrc = Image::findorfail($id);
-        return $activeIds;
+        $img = Image::findorfail($id);
+        $imgSrc = Storage::disk('local')->url('img/'.$img->path) ;
+        return $imgSrc;
     }
 }

@@ -46708,9 +46708,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             alerttype: 'alert-info',
             invalidMessageText: '',
             invalidMessageTextShow: false,
-            imgSrc: ''
+            imgSrc: []
         };
     },
+    created: function created() {
+        var self = this;
+        axios.get('api/images').then(function (response) {
+            for (var index in self.game.board) {
+                self.imgSrc[index] = response.data;
+            }
+        });
+        return self.imgSrc;
+    },
+
     computed: {
         message: function message() {
             var _this = this;
@@ -46757,14 +46767,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //}
         },
         pieceImageURL: function pieceImageURL(piece) {
-            var self = this;
-            axios.get('api/images' + piece).then(function (response) {
-                //console.log(response.data[piece]['id'])
-                self.imgSrc = response.data;
-                //this.imgSrc = response.data.data[piece];
-            });
-            console.log(self.imgSrc);
-            return self.imgSrc + '.png';
+            //console.log(imgSrc);
+            //return imgSrc[piece] ;
         },
         getImage: function getImage(piece) {}
     }
