@@ -48,7 +48,7 @@ class MemoryGame {
     }
 
     play(playerNumber, index){
-        console.log('game_model');
+        //this.boardStatus[index] = playerNumber;
         if (!this.gameStarted) {
             return false;
         }
@@ -63,7 +63,9 @@ class MemoryGame {
         }
 
         if (this.playerClick == 1) {
+            console.log('player 1');
             this.boardStatus[index] = playerNumber;
+            console.log(this.boardStatus);
             this.firstIndex = index;
             this.playerClick = 2;
 
@@ -71,6 +73,7 @@ class MemoryGame {
         }
 
         if (this.playerClick == 2) {
+            console.log('player 2 ');
             this.boardStatus[index] = playerNumber;
             this.playerClick = 1;
 

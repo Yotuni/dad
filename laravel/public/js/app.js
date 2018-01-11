@@ -46779,10 +46779,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('click_close', this.game);
         },
         clickPiece: function clickPiece(index) {
-            console.log('here');
-            this.$emit('click_piece', this.game, index);
+            console.log('index' + index);
+            if (this.game.boardStatus[index] == 0) this.$emit('click_piece', this.game, index);
         },
         pieceImageURL: function pieceImageURL(piece) {
+            console.log(piece + ' ------- ' + this.game.boardStatus[piece]);
             if (this.game.boardStatus[piece] > 0) return this.imgs[piece];else return this.hiddenImage;
         },
         getImage: function getImage(piece) {}
@@ -46827,7 +46828,7 @@ var render = function() {
         _vm._l(_vm.game.board, function(piece, key) {
           return _c("div", [
             _c("img", {
-              attrs: { src: _vm.pieceImageURL(piece) },
+              attrs: { src: _vm.pieceImageURL(key) },
               on: {
                 click: function($event) {
                   _vm.clickPiece(key)
