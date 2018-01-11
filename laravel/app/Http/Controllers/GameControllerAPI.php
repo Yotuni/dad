@@ -6,17 +6,18 @@ use Illuminate\Http\Request;
 use App\Game;
 use App\Game_user;
 use Auth;
+use App\Image;
 
 class GameControllerAPI extends Controller
 {
 	public function all()
     {
-    	$games = Game::all();
+    	/*$games = Game::all();
     	foreach ($games as $game) {
     		$game['created_by'] = $game->user->nickname;
     	}
-    	return $games;
-    	//return Game::all();
+    	return $games;*/
+    	return Game::all();
     }    
 
     public function store() 
@@ -61,7 +62,7 @@ class GameControllerAPI extends Controller
     {
         $game = Game::findOrFail($id);
         $users = $game->users()->get();
-        return view('adminPanel.games.show', compact('game', 'users'));
+        return $game;
     }
 
 }
