@@ -67,9 +67,10 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('play', function (data) {
-		console.log('game_server');
+		console.log('data.index');
 		if (data.game['player'+data.game.playerTurn+'SocketID'] == socket.id) {
 			let currentGame = games.gameByID(data.game.gameID);
+			
 			currentGame.play(data.game.playerTurn, data.index);
 
 			io.to(currentGame.gameID).emit('my_active_games_changed');

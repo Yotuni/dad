@@ -12,7 +12,7 @@
             </div>
             <div class="board">
                 <div v-for="(piece, key) of game.board" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                    <img v-bind:src="pieceImageURL(key)" v-on:click="clickPiece(key)">
                 </div>
             </div>
             <hr>
@@ -99,10 +99,12 @@
                 this.$emit('click_close', this.game);
             },
             clickPiece(index){
-                console.log('here');
-                this.$emit('click_piece', this.game, index);
+                console.log('index'+index);
+                if (this.game.boardStatus[index] == 0)
+                    this.$emit('click_piece', this.game, index);
             },
             pieceImageURL(piece) {
+                console.log(piece + ' ------- ' + this.game.boardStatus[piece]);
                 if (this.game.boardStatus[piece] > 0)
                     return this.imgs[piece];
                 else 
