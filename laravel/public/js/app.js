@@ -46708,17 +46708,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             alerttype: 'alert-info',
             invalidMessageText: '',
             invalidMessageTextShow: false,
-            imgSrc: []
+            imgSrcs: []
         };
     },
-    created: function created() {
-        var self = this;
-        axios.get('api/images').then(function (response) {
-            for (var index in self.game.board) {
-                self.imgSrc[index] = response.data;
-            }
-        });
-        return self.imgSrc;
+    beforeMount: function beforeMount() {
+        this.loadImages();
     },
 
     computed: {
@@ -46758,6 +46752,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        loadImages: function loadImages() {
+            var self = this;
+            axios.get('api/images').then(function (response) {
+                self.imgSrcs = response.data;
+            });
+        },
         closeGame: function closeGame() {
             this.$emit('click_close', this.game);
         },
@@ -46767,8 +46767,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //}
         },
         pieceImageURL: function pieceImageURL(piece) {
-            //console.log(imgSrc);
-            //return imgSrc[piece] ;
+            return this.imgSrcs[piece];
         },
         getImage: function getImage(piece) {}
     }

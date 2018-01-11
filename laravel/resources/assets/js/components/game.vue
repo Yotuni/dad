@@ -28,18 +28,11 @@
                 alerttype: 'alert-info',
                 invalidMessageText: '',
                 invalidMessageTextShow: false,
-                imgSrc : [],
+                imgSrcs : [],
             }
         },
-        created() {
-            var self = this;
-            axios.get('api/images')
-                .then(response=>{
-                    for(var index in self.game.board) {
-                        self.imgSrc[index] = response.data;
-                    }
-            });
-            return self.imgSrc;
+        beforeMount() {
+            this.loadImages();
         },
         computed: {
             message(){
@@ -76,6 +69,13 @@
             },
         },
         methods: {
+            loadImages() {
+                var self = this;
+                axios.get('api/images')
+                    .then(response=>{
+                        self.imgSrcs = response.data;
+                });
+            },
             closeGame (){
                 this.$emit('click_close', this.game);
             },
@@ -85,8 +85,7 @@
                 //}
             },
             pieceImageURL(piece) {
-                //console.log(imgSrc);
-                //return imgSrc[piece] ;
+                return this.imgSrcs[piece];
             },
             getImage(piece) {
             }
