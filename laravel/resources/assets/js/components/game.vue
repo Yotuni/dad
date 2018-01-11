@@ -99,12 +99,14 @@
                 this.$emit('click_close', this.game);
             },
             clickPiece(index){
-                //if (this.game['player'+this.game.playerTurn+'SocketID'] == this.socketId) {
-                return this.imgs[piece] = this.imgSrcs[index];
-                //}
+                console.log('here');
+                this.$emit('click_piece', this.game, index);
             },
             pieceImageURL(piece) {
-                return this.imgs[piece];
+                if (this.game.boardStatus[piece] > 0)
+                    return this.imgs[piece];
+                else 
+                    return this.hiddenImage;
             },
             getImage(piece) {
             }

@@ -48,6 +48,7 @@ class MemoryGame {
     }
 
     play(playerNumber, index){
+        console.log('game_model');
         if (!this.gameStarted) {
             return false;
         }
@@ -57,7 +58,7 @@ class MemoryGame {
         if (playerNumber != this.playerTurn) {
             return false;
         }
-        if (this.board[index] !== 0) {
+        if (this.boardStatus[index] !== 0) {
             return false;
         }
 
@@ -65,6 +66,7 @@ class MemoryGame {
             this.boardStatus[index] = playerNumber;
             this.firstIndex = index;
             this.playerClick = 2;
+
             return true;
         }
 
@@ -72,7 +74,7 @@ class MemoryGame {
             this.boardStatus[index] = playerNumber;
             this.playerClick = 1;
 
-            if (checkDouble(this.firstIndex, index)) {
+            if (this.checkDouble(this.firstIndex, index)) {
                 if (playerNumber == 1) {
                     this.player1TurnOver++;
                 } else if (playerNumber == 2) {
