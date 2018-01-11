@@ -1,16 +1,20 @@
 /*jshint esversion: 6 */
 
-class TicTacToeGame {
+class MemoryGame {
     constructor(ID, player1Name) {
         this.gameID = ID;
         this.gameEnded = false;
         this.gameStarted = false;
-        this.player1= player1Name;
-        this.player2= '';
+        this.player1Name = player1Name;
+        this.player2Name = '';
+        this.player1TurnOver = 0;
+        this.player2TurnOver = 0;
         this.playerTurn = 1;
         this.winner = 0;
+        this.playerClick = 1;
+        this.firstIndex = -1;
         this.board = [0,2,0,2,3,1,4,3,1,4,7,5,7,5,6,6];
-        
+        this.boardStatus = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     }
 
     join(player2Name){
@@ -18,41 +22,29 @@ class TicTacToeGame {
         this.gameStarted = true;
     }
 
-    hasRow(value){
-        return  ((this.board[0]==value) && (this.board[1]==value) && (this.board[2]==value)) || 
-                ((this.board[3]==value) && (this.board[4]==value) && (this.board[5]==value)) || 
-                ((this.board[6]==value) && (this.board[7]==value) && (this.board[8]==value)) || 
-                ((this.board[0]==value) && (this.board[3]==value) && (this.board[6]==value)) || 
-                ((this.board[1]==value) && (this.board[4]==value) && (this.board[7]==value)) || 
-                ((this.board[2]==value) && (this.board[5]==value) && (this.board[8]==value)) || 
-                ((this.board[0]==value) && (this.board[4]==value) && (this.board[8]==value)) || 
-                ((this.board[2]==value) && (this.board[4]==value) && (this.board[6]==value));
-    }  
+    allTurned(){
+        for (let value of this.boardStatus) {
+            if (value === 0) {
+                return false;
+            }
+        }
+    }
 
     checkGameEnded(){
-        if (this.hasRow(1)) {
+        if (this.allTurned() && player1TurnOver > player2TurnOver) {
             this.winner = 1;
             this.gameEnded = true;
             return true;
-        } else if (this.hasRow(2)) {
+        } else if (this.allTurned() && player1TurnOver < player2TurnOver) {
             this.winner = 2;
             this.gameEnded = true;
             return true;
-        } else if (this.isBoardComplete()) {
+        } else if (this.allTurned() && player1TurnOver == player2TurnOver) {
             this.winner = 0;
             this.gameEnded = true;
             return true;
         }
         return false;
-    }
-
-    isBoardComplete(){
-        for (let value of this.board) {
-            if (value === 0) {
-                return false;
-            }
-        }
-        return true;
     }
 
     play(playerNumber, index){
@@ -68,13 +60,45 @@ class TicTacToeGame {
         if (this.board[index] !== 0) {
             return false;
         }
-        this.board[index] = playerNumber;
-        if (!this.checkGameEnded()) {
-            this.playerTurn = this.playerTurn == 1 ? 2 : 1;
+
+        if (this.playerClick == 1) {
+            this.boardStatus[index] = playerNumber;
+            this.firstIndex = index;
+            this.playerClick = 2;
+            return true;
         }
-        return true;
+
+        if (this.playerClick == 2) {
+            this.boardStatus[index] = playerNumber;
+            this.playerClick = 1;
+
+            if (checkDouble(this.firstIndex, index)) {
+                if (playerNumber == 1) {
+                    this.player1TurnOver++;
+                } else if (playerNumber == 2) {
+                    this.player2TurnOver++;
+                }
+            } else {
+                this.boardStatus[this.firstIndex] = 0;
+                this.boardStatus[this.index] = 0;
+                this.firstIndex = -1;
+                return false;
+            }
+
+            if (!this.checkGameEnded()) {
+                this.playerTurn = this.playerTurn == 1 ? 2 : 1;
+            }
+            return true;
+        }
+    }
+
+    checkDouble(firstIndex, secondIndex){
+        if (this.board[firstIndex] == this.board[secondIndex]) {
+            return true;
+        }
+        return false;
     }
 
 }
 
-module.exports = TicTacToeGame;
+module.exports = MemoryGame;
