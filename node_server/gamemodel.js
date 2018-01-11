@@ -13,8 +13,8 @@ class MemoryGame {
         this.winner = 0;
         this.playerClick = 1;
         this.firstIndex = -1;
-        this.board = [0,2,0,2,3,1,4,3,1,4,7,5,7,5,6,6];
         this.boardStatus = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        this.board = [9,2,9,2,3,8,4,3,8,4,7,5,7,5,6,6];
     }
 
     join(player2Name){
