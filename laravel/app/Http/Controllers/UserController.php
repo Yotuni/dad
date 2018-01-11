@@ -17,11 +17,28 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    
+
     public function index()
     {
         $users = User::all();
         return view('adminPanel.users.index', compact('users'));
     }
+
+    public function listRemovedUsers()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('adminPanel.users.listRemovedUsers', compact('users'));
+    }
+
+    public function recoverUser($id)
+    {
+        $userDeleted = User::withTrashed()->find($id)->restore();
+        return redirect()->route('listRemovedUsers');
+    }
+
 
     public function block(User $user, Request $request)
     {
@@ -134,6 +151,6 @@ class UserController extends Controller
     {
         $user = User::findorfail($id);
         $user->delete();
-        return redirect()->route('adminPanel.users.index');
+        return redirect()->route('users.index');
     }
 }

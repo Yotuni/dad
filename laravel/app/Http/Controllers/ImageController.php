@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use App\Image;
 
 
@@ -45,6 +46,39 @@ class ImageController extends Controller
         return  redirect()->route('hiddenFace');
     }
 
-    
 
+    public function destroy($id)
+    {
+        $image = Image::findOrFail($id);
+        $face = $image->face;
+        Storage::disk('public')->delete('img/' . $image->path);
+        $image->delete();
+        if ($face == 'tile') {
+            return redirect()->route('shownFace');
+        } else {
+            return redirect()->route('hiddenFace');
+        }
+    }
+
+    public function create(Request $request) {
+        $img = new Image();
+        $image = $request->file('image');
+        $filename = $request->image->hashName();
+        $path = 'img';
+        //Storing image
+        Storage::disk('public')->put($path . '/' , $image);
+        //Get user
+        if($request->face == true) 
+            $img->face = 'tile';
+        else 
+            $img->face = 'hidden';
+        $img->path = $filename;
+        $img->active = 0;
+        $img->save();
+        if($request->face == true) {
+            return  redirect()->route('shownFace');
+        } else {
+            return  redirect()->route('hiddenFace');
+        }
+    }
 }

@@ -14,15 +14,6 @@
             </div>
 @endif
 
-
-@if (Session::has('message'))
-        <div class="alert alert-success">
-            {!!Session::get('message')!!}
-        </div>
-@endif
-
-<!-- <div><a class="btn btn-primary" href="{{ route('users.create')}}">New User</a></div> -->
-
     <table class="table table-striped" id="showUsers">
     <thead>
         <tr>
@@ -42,26 +33,14 @@
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->nickname}}</td>
+
                 <td>
-                <div class="form-group">
-                    @if ($user->blocked == 1)
-                        <form method="POST" action="{{route('blockUser' ,$user)}}">
+                    <form method="POST" action="{{route('recoverUser' ,$user->id)}}">
                         {{csrf_field()}}
-                        <div class="form-group" hidden>
-                            <input name="block" id="block" class="form-control" value="0" />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger btn-sm">Recover</button>
                         </div>
-                        <button type="submit" class="btn btn-success btn-sm">UnBlock</button>
-                        </form> 
-                    @else
-                    <a class="btn btn-danger btn-sm" href="{{route('blockUser' ,$user)}}">Block</a>
-                    @endif
-                </div>
-                   
-                </td>
-                <td>
-                    {{ Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id]]) }}
-                        {{ Form::submit('Delete', ['class' => 'btn btn-danger']) }}
-                    {{ Form::close() }}
+                    </form> 
                 </td>
             </tr>
         @endforeach

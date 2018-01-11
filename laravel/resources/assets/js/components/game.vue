@@ -27,7 +27,8 @@
 			return {
                 alerttype: 'alert-info',
                 invalidMessageText: '',
-                invalidMessageTextShow: false
+                invalidMessageTextShow: false,
+                imgSrc : '',
             }
         },
         computed: {
@@ -74,9 +75,19 @@
                 //}
             },
             pieceImageURL(piece) {
-                var imgSrc = String(piece);
-                return 'img/' + imgSrc + '.png';
+                var self = this;
+                axios.get('api/images' + piece)
+                .then(response=>{
+                    //console.log(response.data[piece]['id'])
+                    self.imgSrc = response.data;
+                    //this.imgSrc = response.data.data[piece];
+                });
+                console.log (self.imgSrc);
+                return self.imgSrc + '.png';
+                
             },
+            getImage(piece) {
+            }
         }
     }
 </script>
