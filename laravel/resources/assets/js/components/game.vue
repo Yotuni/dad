@@ -29,10 +29,15 @@
                 invalidMessageText: '',
                 invalidMessageTextShow: false,
                 imgSrcs : [],
+                imgs: [],
+                hiddenImage : [],
             }
         },
         beforeMount() {
             this.loadImages();
+            },
+        mounted() {
+            this.cloneImgs();
         },
         computed: {
             message(){
@@ -71,9 +76,23 @@
         methods: {
             loadImages() {
                 var self = this;
+
+                
+                axios.get('api/images/hidden')
+                    .then(response=>{
+                        self.hiddenImage = response.data;
+                });
+
                 axios.get('api/images')
                     .then(response=>{
                         self.imgSrcs = response.data;
+                        self.imgs = response.data;
+                });
+            },
+            cloneImgs() {
+                this.imgs = this.imgSrcs.slice(0);
+                this.imgs.forEach(function(img) {
+                   img = this.hiddenImage;
                 });
             },
             closeGame (){
@@ -81,11 +100,11 @@
             },
             clickPiece(index){
                 //if (this.game['player'+this.game.playerTurn+'SocketID'] == this.socketId) {
-                   this.$emit('click_piece', this.game, index);
+                return this.imgs[piece] = this.imgSrcs[index];
                 //}
             },
             pieceImageURL(piece) {
-                return this.imgSrcs[piece];
+                return this.imgs[piece];
             },
             getImage(piece) {
             }

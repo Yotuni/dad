@@ -24,4 +24,10 @@ class ImageControllerAPI extends Controller
         $imgSrc = Storage::disk('local')->url('img/'.$img->path) ;
         return $imgSrc;
     }
+
+    public function getHidden(){
+    	$img = Image::where('face', 'hidden')->first();
+        $imgSrc = Storage::disk('local')->url('img/'.$img->path) ;
+        return $imgSrc;
+    }
 }

@@ -46708,11 +46708,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             alerttype: 'alert-info',
             invalidMessageText: '',
             invalidMessageTextShow: false,
-            imgSrcs: []
+            imgSrcs: [],
+            imgs: [],
+            hiddenImage: []
         };
     },
     beforeMount: function beforeMount() {
         this.loadImages();
+    },
+    mounted: function mounted() {
+        this.cloneImgs();
     },
 
     computed: {
@@ -46754,8 +46759,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         loadImages: function loadImages() {
             var self = this;
+
+            axios.get('api/images/hidden').then(function (response) {
+                self.hiddenImage = response.data;
+            });
+
             axios.get('api/images').then(function (response) {
                 self.imgSrcs = response.data;
+                self.imgs = response.data;
+            });
+        },
+        cloneImgs: function cloneImgs() {
+            this.imgs = this.imgSrcs.slice(0);
+            this.imgs.forEach(function (img) {
+                img = this.hiddenImage;
             });
         },
         closeGame: function closeGame() {
@@ -46763,11 +46780,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         clickPiece: function clickPiece(index) {
             //if (this.game['player'+this.game.playerTurn+'SocketID'] == this.socketId) {
-            this.$emit('click_piece', this.game, index);
+            return this.imgs[piece] = this.imgSrcs[index];
             //}
         },
         pieceImageURL: function pieceImageURL(piece) {
-            return this.imgSrcs[piece];
+            return this.imgs[piece];
         },
         getImage: function getImage(piece) {}
     }
