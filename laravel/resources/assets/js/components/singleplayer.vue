@@ -83,6 +83,7 @@
                 } 
             },
             redraw: function() {
+                console.log(this.boardStatus);
                 this.$forceUpdate();
             },
             clickPiece: function(index) {
@@ -103,9 +104,13 @@
 
                 if (this.playerClick == 2) {
                     this.boardStatus[index] = 1;
+                    //this.redraw();
                     this.playerClick = 1;
-
                     if (!this.checkDouble(this.firstIndex, index)) {
+                        var currentTime = new Date().getTime();
+                        while (currentTime + 1000 >= new Date().getTime()) {
+
+                        }
                         this.boardStatus[this.firstIndex] = 0;
                         this.boardStatus[index] = 0;
                         this.firstIndex = -1;
