@@ -48,7 +48,6 @@ class MemoryGame {
     }
 
     play(playerNumber, index){
-        //this.boardStatus[index] = playerNumber;
         if (!this.gameStarted) {
             return false;
         }
@@ -73,6 +72,7 @@ class MemoryGame {
         if (this.playerClick == 2) {
             this.boardStatus[index] = playerNumber;
             this.playerClick = 1;
+            this.playerClick = -1;
 
             if (this.checkDouble(this.firstIndex, index)) {
                 if (playerNumber == 1) {
@@ -86,12 +86,15 @@ class MemoryGame {
                 this.firstIndex = -1;
                 this.playerTurn = this.playerTurn == 1 ? 2 : 1;
                 return true; 
+                this.secondIndex = index;
             }
 
             if (!this.checkGameEnded()) {
                 return true;
             }
             //return true;
+            return true;
+
         }
     }
 
@@ -102,6 +105,15 @@ class MemoryGame {
             return true;
         }
         return false;
+    }
+
+    changePlayer(){
+        this.boardStatus[this.firstIndex] = 0;
+        this.boardStatus[index] = 0;
+        this.firstIndex = -1;
+        this.secondIndex = -1;
+        this.playerClick = 1;
+        this.playerTurn = this.playerTurn == 1 ? 2 : 1;
     }
 
 }
