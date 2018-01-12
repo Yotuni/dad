@@ -103,10 +103,14 @@
                     this.$emit('click_piece', this.game, index);
             },
             pieceImageURL(piece, value) {
-                if (this.game.boardStatus[value] > 0)
+                if (this.game.boardStatus[value] > 0) 
+                {
                     return this.imgs[piece];
+                }
                 else 
+                {
                     return this.hiddenImage;
+                }
             },
         }
     }

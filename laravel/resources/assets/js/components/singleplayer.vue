@@ -3,7 +3,7 @@
         <div>
             <h3 class="text-center">{{ title }}</h3>
             <br>
-            <h2>Current Player : {{ currentPlayer }}</h2>
+            <h2>Singleplayer Mode</h2>
             <br>
         </div>
         <div class="game-zone-content">
@@ -14,7 +14,7 @@
 
             <div class="board">
                 <div v-for="(piece, key) of board" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                    <img v-bind:src="pieceImageURL(piece, key)" v-on:click="clickPiece(key)">
                 </div>
             </div>
             <hr>
@@ -33,105 +33,179 @@
                 failMessage: '',
                 currentValue: 1,
                 gameEnded:false,
-                player1User: undefined,
-                player2User: undefined,
-                board: [0,0,0,0,0,0,0,0,0]
+                board: [9,2,9,2,3,8,4,3,8,4,7,5,7,5,6,6],
+                boardStatus: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                imgSrcs : [],
+                imgs: [],
+                hiddenImage : [],
+                playerClick : 1,
+                firstIndex : -1,
+                playerTurn : 1,
             }
         },
+        beforeMount() {
+            this.loadImages();
+            },
+        mounted() {
+            this.cloneImgs();
+            this.board = this.generateRandomBoard();
+        },
         methods: {
-            pieceImageURL: function (piece) {
-                var imgSrc = String(piece);
-                return 'img/' + imgSrc + '.png';
+            loadImages() {
+                var self = this;
+
+                
+                axios.get('api/images/hidden')
+                    .then(response=>{
+                        self.hiddenImage = response.data;
+                });
+
+                axios.get('api/images')
+                    .then(response=>{
+                        self.imgSrcs = response.data;
+                        self.imgs = response.data;
+                });
+            },
+            cloneImgs() {
+                this.imgs = this.imgSrcs.slice(0);
+                this.imgs.forEach(function(img) {
+                   img = this.hiddenImage;
+                });
+            },
+            pieceImageURL: function (piece, value) {
+                if (this.boardStatus[value] == 0) 
+                {
+                    return this.hiddenImage;
+                }
+                else 
+                {
+                    return this.imgs[piece];
+                } 
+            },
+            redraw: function() {
+                this.$forceUpdate();
             },
             clickPiece: function(index) {
-                if(this.board[index] || this.gameEnded) return;
-                this.board[index] = this.currentValue;
-                this.successMessage = this.currentPlayer+' has Played';
-                this.showSuccess = true;
-                this.currentValue = (this.currentValue == 1)? 2 : 1;
-                this.checkGameEnded();
+                console.log();
+                if (this.gameEnded) {
+                    return false;
+                }
+                if (this.boardStatus[index] !== 0) {
+                    return false;
+                }
+                if (this.playerClick == 1) {
+                    this.boardStatus[index] = 1;
+                    this.firstIndex = index;
+                    this.playerClick = 2;
+                    this.redraw();
+                    return true;
+                }
+
+                if (this.playerClick == 2) {
+                    this.boardStatus[index] = 1;
+                    this.playerClick = 1;
+
+                    if (!this.checkDouble(this.firstIndex, index)) {
+                        this.boardStatus[this.firstIndex] = 0;
+                        this.boardStatus[index] = 0;
+                        this.firstIndex = -1;
+                        this.redraw();
+                        return true;
+                    } else {
+                        this.redraw(); 
+                    }
+
+                    if (this.checkGameEnded()) {
+                        this.successMessage = 'You won the game';
+                        this.showSuccess = true;
+                        this.gameEnded = true;
+                        this.redraw(); 
+                        return true;
+                    }
+                    return true;
+                }
+
+            },
+            checkDouble: function (firstIndex, secondIndex) {
+                if (this.board[firstIndex] === this.board[secondIndex]) {
+                    return true;
+                }
+                return false;
+            },
+            generateRandomBoard: function(){
+                var randomBoard =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                var randomValues = [];
+                for (var i = 0; i < 8 ; i++) {
+                    var randomValue ;
+                    do {
+                        randomValue = Math.floor((Math.random() * 20) + 1);
+                    } while(randomValues.includes(randomValue))
+                    randomValues.push(randomValue);
+                }
+
+                for (var i = 0; i < 8 ; i++) {
+                    var randomPosition ;
+                    var randomPosition2;
+                    do {
+                        randomPosition = Math.floor(Math.random() * 16);
+                        randomPosition2 = Math.floor(Math.random() * 16);
+                    } while(randomPosition === randomPosition2 || randomBoard[randomPosition] != 0 || randomBoard[randomPosition2] != 0);
+
+                    console.log('randomPosition   ' + randomPosition + 'value' + randomBoard[randomPosition]);
+                    console.log('randomPosition2' + randomPosition2 + 'value' + randomBoard[randomPosition2]);
+                    randomBoard[randomPosition] = randomValues[i];
+                    randomBoard[randomPosition2] = randomValues[i];
+                }
+                console.log(randomBoard);
+/*
+                for(let value of randomValues) {
+                    var i = 0;
+                    for (let boardValue of randomBoard) {
+                        if (value == boardValue) {
+                            i++;
+                        }
+                    }
+                    if(i < 3) {
+                        do {
+                            var randomPosition = Math.floor((Math.random() * 16) + 1);
+                        } while(randomBoard[randomPosition] != 0);
+                    }
+                }
+                console.log(randomBoard[0]);
+                console.log(randomBoard);
+                                console.log(randomValues);
+*/
+                return randomBoard;
             },
             restartGame:function(){
                 console.log('restartGame');
-                this.board= [0,0,0,0,0,0,0,0,0];
+                this.board = this.generateRandomBoard();
+                this.boardStatus =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                 this.showSuccess= false;
                 this.showFailure= false;
                 this.successMessage= '';
                 this.failMessage= '';
                 this.currentValue= 1;
                 this.gameEnded= false;
+                this.redraw();
             },
             // ----------------------------------------------------------------------------------------
             // GAME LOGIC - START
             // ----------------------------------------------------------------------------------------
-            hasRow: function(value){
-                return  ((this.board[0]==value) && (this.board[1]==value) && (this.board[2]==value)) ||
-                ((this.board[3]==value) && (this.board[4]==value) && (this.board[5]==value)) ||
-                ((this.board[6]==value) && (this.board[7]==value) && (this.board[8]==value)) ||
-                ((this.board[0]==value) && (this.board[3]==value) && (this.board[6]==value)) ||
-                ((this.board[1]==value) && (this.board[4]==value) && (this.board[7]==value)) ||
-                ((this.board[2]==value) && (this.board[5]==value) && (this.board[8]==value)) ||
-                ((this.board[0]==value) && (this.board[4]==value) && (this.board[8]==value)) ||
-                ((this.board[2]==value) && (this.board[4]==value) && (this.board[6]==value));
-            },
             checkGameEnded: function(){
-                if (this.hasRow(1)) {
-                    this.successMessage = this.playerName(1) + ' won the Game';
-                    this.showSuccess = true;
-                    this.gameEnded = true;
-                }
-                if (this.hasRow(2)) {
-                    this.successMessage = this.playerName(2) + ' won the Game';
-                    this.showSuccess = true;
-                    this.gameEnded = true;
-                }
-                if (this.isBoardComplete()) {
-                    this.successMessage = 'The Game ended in a Tie';
-                    this.showSuccess = true;
-                    this.gameEnded = true;
-                }
-                return false;
-            },
-            isBoardComplete:function(){
-                var returnValue = true;
-                this.board.forEach(function(element) {
-                    if (element === 0) {
-                        returnValue = false;
-                        return;
+                for (let value of this.boardStatus) {
+                    if (value === 0) {
+                        return false;
                     }
-                });
-                return returnValue;
+                }
+                return true;
             },
             // ----------------------------------------------------------------------------------------
             // GAME LOGIC - END
             // ----------------------------------------------------------------------------------------
-            playerName: function(playerNumber){
-                console.log(playerNumber);
-                console.log(this.player1User);
-                if(this.player1User != undefined && playerNumber == 1){
-                    return this.player1User.name;
-                }
-                if(this.player2User != undefined && playerNumber == 2){
-                    return this.player2User.name;
-                }
-                return 'Player '+playerNumber;
-            }
         },
         computed:{
-            currentPlayer: function(){
-                console.log(this.currentValue);
-                console.log(this.playerName(this.currentValue));
-                return this.playerName(this.currentValue);
-            }
         },
-        mounted(){
-            if(this.$root.$data.player1){
-                this.player1User = this.$root.$data.player1;
-            }
-            if(this.$root.$data.player2 ){
-                this.player2User = this.$root.$data.player2;
-            }
-        }
     }
 </script>
 
