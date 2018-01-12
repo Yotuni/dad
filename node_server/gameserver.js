@@ -87,4 +87,21 @@ io.on('connection', function (socket) {
 		games.removeGame(game.gameID, socket.id);
 		io.to(game.gameID).emit('my_active_games_changed');
 	});
+
+	socket.on('start', function (game) {
+		if (game['player'+game.playerTurn+'SocketID'] == socket.id) {
+			let currentGame = games.gameByID(game.gameID);
+
+			currentGame.startGame();
+			io.to(currentGame.gameID).emit('my_active_games_changed');
+		} else {
+			socket.emit('message',
+				{
+					type: 'invalid-start',
+				 	text: "Can't start the game!",
+				 	gameID: game.gameID
+				}
+			);
+		}
+	});
 });

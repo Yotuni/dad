@@ -17,6 +17,7 @@
                       :socketId="socketId"
                       @click_piece="play"
                       @click_close="close"
+                      @click_start="start"
                       :ref = "'gameComponents'+game.gameID">
                 </game>
             </template>
@@ -102,6 +103,9 @@
             },
             close(game){
                 this.$socket.emit('close', game);
+            },
+            start(game){
+                this.$socket.emit('start', game);
             }
         },
         components: {

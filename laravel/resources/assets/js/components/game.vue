@@ -8,6 +8,7 @@
             <div class="alert" :class="alerttype">
                 <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
                     <a v-on:click.prevent="closeGame" v-if="game.gameEnded">Close Game</a>
+                    <a v-on:click.prevent="startGame" v-if="!game.gameStarted">Start Game</a>
                 </strong>
             </div>
             <div class="board">
@@ -77,7 +78,7 @@
             loadImages() {
                 var self = this;
 
-                
+
                 axios.get('api/images/hidden')
                     .then(response=>{
                         self.hiddenImage = response.data;
@@ -95,8 +96,11 @@
                    img = this.hiddenImage;
                 });
             },
-            closeGame (){
+            closeGame(){
                 this.$emit('click_close', this.game);
+            },
+            startGame(){
+                this.$emit('click_start', this.game);
             },
             clickPiece(index){
                 if (this.game.boardStatus[index] == 0)
@@ -105,7 +109,7 @@
             pieceImageURL(piece, value) {
                 if (this.game.boardStatus[value] > 0)
                     return this.imgs[piece];
-                else 
+                else
                     return this.hiddenImage;
             },
         }
