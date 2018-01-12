@@ -71,7 +71,6 @@ class MemoryGame {
 
         if (this.playerClick == 2) {
             this.boardStatus[index] = playerNumber;
-            this.playerClick = 1;
             this.playerClick = -1;
 
             if (this.checkDouble(this.firstIndex, index)) {
