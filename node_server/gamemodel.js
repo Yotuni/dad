@@ -108,6 +108,25 @@ class MemoryGame {
         }
     }
 
+                this.boardStatus[this.firstIndex] = 0;
+                this.boardStatus[index] = 0;
+                this.firstIndex = -1;
+                this.playerTurn = this.playerTurn == 1 ? 2 : 1;
+                return true; 
+                this.secondIndex = index;
+            }
+
+            if (!this.checkGameEnded()) {
+                return true;
+            }
+            //return true;
+            return true;
+
+        }
+    }
+
+
+
     checkDouble(firstIndex, secondIndex){
         if (this.board[firstIndex] === this.board[secondIndex]) {
             return true;
