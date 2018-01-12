@@ -91,6 +91,8 @@ class MemoryGame {
         }
     }
 
+    
+
     checkDouble(firstIndex, secondIndex){
         if (this.board[firstIndex] === this.board[secondIndex]) {
             return true;
