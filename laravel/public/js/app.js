@@ -46779,14 +46779,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('click_close', this.game);
         },
         clickPiece: function clickPiece(index) {
-            console.log('index' + index);
             if (this.game.boardStatus[index] == 0) this.$emit('click_piece', this.game, index);
         },
         pieceImageURL: function pieceImageURL(piece, value) {
-            console.log('piece : ' + ' ------- ' + piece + 'value : ' + ' ------- ' + value);
             if (this.game.boardStatus[value] > 0) return this.imgs[piece];else return this.hiddenImage;
-        },
-        getImage: function getImage(piece) {}
+        }
     }
 });
 

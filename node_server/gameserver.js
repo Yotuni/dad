@@ -72,7 +72,6 @@ io.on('connection', function (socket) {
 			let currentGame = games.gameByID(data.game.gameID);
 			
 			currentGame.play(data.game.playerTurn, data.index);
-
 			io.to(currentGame.gameID).emit('my_active_games_changed');
 		} else {
 			socket.emit('message',
