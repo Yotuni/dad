@@ -40,17 +40,14 @@ class MemoryGame {
 
     checkGameEnded(){
         if (this.allTurned() && this.player1Pairs > this.player2Pairs) {
-            console.log('player1 wins');
             this.winner = 1;
             this.gameEnded = true;
             return true;
         } else if (this.allTurned() && this.player1Pairs < this.player2Pairs) {
-            console.log('player2 wins');
             this.winner = 2;
             this.gameEnded = true;
             return true;
         } else if (this.allTurned() && this.player1Pairs == this.player2Pairs) {
-            console.log('tie');
             this.winner = 0;
             this.gameEnded = true;
             return true;
@@ -92,7 +89,6 @@ class MemoryGame {
                 }
                 this.playerClick = 1;
                 if (this.checkGameEnded()){
-                    console.log('here');
                     return true;
                 }
                 return false;
@@ -107,25 +103,6 @@ class MemoryGame {
             }
         }
     }
-
-                this.boardStatus[this.firstIndex] = 0;
-                this.boardStatus[index] = 0;
-                this.firstIndex = -1;
-                this.playerTurn = this.playerTurn == 1 ? 2 : 1;
-                return true; 
-                this.secondIndex = index;
-            }
-
-            if (!this.checkGameEnded()) {
-                return true;
-            }
-            //return true;
-            return true;
-
-        }
-    }
-
-
 
     checkDouble(firstIndex, secondIndex){
         if (this.board[firstIndex] === this.board[secondIndex]) {
