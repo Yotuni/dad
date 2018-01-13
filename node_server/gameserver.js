@@ -19,7 +19,7 @@ var app = require('http').createServer();
 
 var io = require('socket.io')(app);
 
-var TicTacToeGame = require('./gamemodel.js');
+var MemoryGame = require('./gamemodel.js');
 var GameList = require('./gamelist.js');
 
 app.listen(8080, function(){

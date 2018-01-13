@@ -8,7 +8,7 @@
             <div class="alert" :class="alerttype">
                 <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
                     <a v-on:click.prevent="closeGame" v-if="game.gameEnded">Close Game</a>
-                    <a v-on:click.prevent="startGame" v-if="!game.gameStarted">Start Game</a>
+                    <a v-on:click.prevent="startGame" v-if="this.game['player'+this.game.playerTurn+'SocketID'] == this.socketId && !game.gameStarted">Start Game</a>
                 </strong>
             </div>
             <div class="board">
@@ -29,9 +29,9 @@
                 alerttype: 'alert-info',
                 invalidMessageText: '',
                 invalidMessageTextShow: false,
-                imgSrcs : [],
+                imgSrcs: [],
                 imgs: [],
-                hiddenImage : [],
+                hiddenImage: [],
             }
         },
         beforeMount() {
@@ -72,7 +72,7 @@
                 }else{
                     return 'Waiting for other player';
                 }
-            },
+            }
         },
         methods: {
             loadImages() {
@@ -103,8 +103,9 @@
                 this.$emit('click_start', this.game);
             },
             clickPiece(index){
-                if (this.game.boardStatus[index] == 0)
+                if (this.game.boardStatus[index] === 0) {
                     this.$emit('click_piece', this.game, index);
+                }
             },
             pieceImageURL(piece, value) {
                 if (this.game.boardStatus[value] > 0)
@@ -115,7 +116,7 @@
                 {
                     return this.hiddenImage;
                 }
-            },
+            }
         }
     }
 </script>

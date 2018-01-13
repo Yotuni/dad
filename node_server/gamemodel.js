@@ -14,15 +14,46 @@ class MemoryGame {
         this.playerClick = 1;
         this.firstIndex = -1;
         this.boardStatus = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-        this.board = [9,2,9,2,3,8,4,3,8,4,7,5,7,5,6,6];
+        this.board = this.createRandomBoard();
+        //this.board = [9,2,9,2,3,8,4,3,8,4,7,5,7,5,6,6];
+    }
+
+    createRandomBoard(){
+        let randomBoard =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                let randomValues = [];
+                for (let i = 0; i < 8 ; i++) {
+                    let randomValue ;
+                    do {
+                        randomValue = Math.floor((Math.random() * 20) + 1);
+                    } while(randomValues.includes(randomValue))
+                    randomValues.push(randomValue);
+                }
+
+                for (let i = 0; i < 8 ; i++) {
+                    let randomPosition ;
+                    let randomPosition2;
+                    do {
+                        randomPosition = Math.floor(Math.random() * 16);
+                        randomPosition2 = Math.floor(Math.random() * 16);
+                    } while(randomPosition === randomPosition2 || randomBoard[randomPosition] != 0 || randomBoard[randomPosition2] != 0);
+
+                    console.log('randomPosition   ' + randomPosition + 'value' + randomBoard[randomPosition]);
+                    console.log('randomPosition2' + randomPosition2 + 'value' + randomBoard[randomPosition2]);
+                    randomBoard[randomPosition] = randomValues[i];
+                    randomBoard[randomPosition2] = randomValues[i];
+                }
+                console.log(randomBoard);
+                return randomBoard;
     }
 
     join(player2Name){
-        this.player2= player2Name;
+        this.player2Name = player2Name;
     }
 
     startGame(){
-        this.gameStarted = true;
+        if (this.player2Name !== '') {
+            this.gameStarted = true;
+        }
     }
 
     allTurned(){
@@ -69,7 +100,7 @@ class MemoryGame {
             return false;
         }
 
-        if (this.playerClick == 1) {
+        if (this.playerClick === 1) {
             this.boardStatus[index] = playerNumber;
             this.firstIndex = index;
             this.playerClick = 2;
@@ -77,29 +108,29 @@ class MemoryGame {
             return true;
         }
 
-        if (this.playerClick == 2) {
+        if (this.playerClick === 2) {
             this.boardStatus[index] = playerNumber;
-            this.playerClick = -1;
 
             if (this.checkDouble(this.firstIndex, index)) {
-                if (playerNumber == 1) {
+                console.log('double');
+                if (playerNumber === 1) {
                     this.player1Pairs++;
-                } else if (playerNumber == 2) {
+                } else if (playerNumber === 2) {
                     this.player2Pairs++;
                 }
                 this.playerClick = 1;
                 if (this.checkGameEnded()){
                     return true;
                 }
-                return false;
+                return true;
             } else {
-                //this.secondIndex = index;
+                console.log('not double');
                 this.boardStatus[this.firstIndex] = 0;
                 this.boardStatus[index] = 0;
                 this.firstIndex = -1;
                 this.playerClick = 1;
                 this.playerTurn = this.playerTurn == 1 ? 2 : 1;
-                return false;
+                return true;
             }
         }
     }
@@ -110,16 +141,6 @@ class MemoryGame {
         }
         return false;
     }
-
-    /*changePlayer(){
-        this.boardStatus[this.firstIndex] = 0;
-        this.boardStatus[index] = 0;
-        this.firstIndex = -1;
-        this.secondIndex = -1;
-        this.playerClick = 1;
-        this.playerTurn = this.playerTurn == 1 ? 2 : 1;
-    }*/
-
 }
 
 module.exports = MemoryGame;
