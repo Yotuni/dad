@@ -10,6 +10,7 @@ class User extends Authenticatable
 {
     use SoftDeletes;
     use Notifiable;
+ 
 
     public function games()
     {

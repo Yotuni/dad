@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/authenticate', 'Auth\LoginController@authenticate')->name('authenticate');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
