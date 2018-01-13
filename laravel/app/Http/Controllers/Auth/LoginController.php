@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Auth;
+
+
 
 class LoginController extends Controller
 {
@@ -35,5 +39,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function authenticate(Request $request)
+    {
+       $credentials = array(
+            'email' => $request->get('email'),
+            'password' => $request->get('password'),
+        );
+        if($credentials['email'] == 'admin@mail.dad' && $credentials['password'] == 'secret'){
+            Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']]);
+            return redirect('/users');
+        }
+        else {
+            return redirect('/home');
+        }
+        
     }
 }
